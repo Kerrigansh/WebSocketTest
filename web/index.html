@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Dynamic Data Push</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width">
+        
+        <script type="text/javascript">
+            var wsocket;
+            var sta, sto, data;
+            function connect() {
+                sta = document.getElementById("start");
+                sto = document.getElementById("stop");
+                data = document.getElementById("data");
+                wsocket = new WebSocket("ws://localhost:8080/MyWebSocketApp/stock");
+                wsocket.onmessage = onMessage;
+                sto.disabled = true;
+            }
+            function disconnect() {
+                msg.innerHTML = "disconnecting...";
+                wsocket.close();
+            }
+            function onMessage(evt) {
+                data.innerHTML = evt.data;
+            }
+            function start() {
+                wsocket.send("START");
+                sta.disabled = true;
+                sto.disabled = false;
+            }
+            function stop() {
+                wsocket.send("END");
+                sta.disabled = false;
+                sto.disabled = true;
+            }
+            window.addEventListener("load", connect, false);
+            window.addEventListener("unload", disconnect, false);
+        </script>
+    </head>
+    <body>
+        Dynamic Data: <div id="data">push data will appear here</div>
+        <br />
+        <input type="submit" id="start" value="start" onclick="start();" />
+        <input type="submit" id="stop" value="stop" onclick="stop();" />
+    </body>
+</html>
