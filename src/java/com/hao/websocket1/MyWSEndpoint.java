@@ -25,7 +25,6 @@ public class MyWSEndpoint implements Serializable {
 
     private static final long serialVersionUID = 42L;
     private static final Logger logger = Logger.getLogger(MyWSEndpoint.class.getName());
-    private Thread thread = null;
     private static final Set<Session> sessions = Collections.synchronizedSet(new HashSet<Session>());
 
     public MyWSEndpoint() {}
@@ -42,15 +41,12 @@ public class MyWSEndpoint implements Serializable {
         logger.log(Level.INFO, "ws onMessage");
         switch (message.toUpperCase()) {
             case "START":
-                System.out.println("====> case start");
-                //startPush();
+                System.out.println("====> start");
                 break;
             case "END":
-                System.out.println("====> case end");
-                //stopPush();
+                System.out.println("====> end");
                 break;
             default:
-                session.getAsyncRemote().sendText("echo" + message + "back");
                 break;
         }
     }
